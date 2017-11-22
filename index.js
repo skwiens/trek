@@ -4,15 +4,23 @@ $(document).ready(() => {
   const $allTripsBtn = $('#allTripsBtn');
   const $fail = $('#fail');
   const $main = $('#main');
+  const $reserveBtn = $('#reserveBtn');
+  const $reservationForm = $('#reservation-form')
 
   // Clear the screen
   $tripsTable.hide();
+  $reservationForm.hide();
 
   // FUNCTIONS
   // Function to request all trips from API and put data into tripsTable
   const getTrips = () => {
     const tripsurl = 'https://trektravel.herokuapp.com/trips';
     const successTrips = (response) => {
+      const headers = `
+        <tr><th>Name</th>
+        <th>Continent</th>
+        <th>Length</th></tr>`;
+      $tripsTable.append(headers);
       response.forEach((trip) => {
         const row = `
           <tr><td class="name" data-id=${trip.id}>${trip.name}</td>
@@ -37,9 +45,8 @@ $(document).ready(() => {
       <p>Name: ${response.name}</p>
       <p>Continent: ${response.continent}</p>
       <p>About: ${response.about}</p>
-      <button data-id=${response.id}>Reserve Trip</button>`;
+      <button id="reserveBtn" data-id=${response.id}>Reserve Trip</button>`;
 
-      console.log(tripInfo);
       $main.html(tripInfo);
     };
 
@@ -53,13 +60,27 @@ $(document).ready(() => {
     getTrips();
   });
 
-  $('#trips').on('click', '.name', function getTrip() {
-    console.log('entering');
-    console.log($(this));
-    console.log($(this).attr('data-id'));
-    $main.empty();
-    const tripID = $(this).attr('data-id')
+  $tripsTable.on('click', '.name', function getTrip() {
+    const tripID = $(this).attr('data-id');
     loadTrip(tripID);
+  });
+
+  $main.on('click', '#reserveBtn', function makeReservation() {
+    $reservationForm.show();
+    const tripID = $(this).attr('data-id');
+    const url = `https://trektravel.herokuapp.com/trips/${tripID}/reservations`;
+    $reservationForm.attr('action', url);
+  });
+
+  $reservationForm.submit(function(e) {
+    e.preventDefault();
+
+    const url = $(this).attr('action');
+    const formData = $(this).serialize();
+
+    $.post(url, formData, (response) => {
+      console.log(response);
+    });
   });
 
   // no padding!
