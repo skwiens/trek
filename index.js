@@ -44,7 +44,7 @@ $(document).ready(() => {
       <button class="button" id="reserveBtn" data-id=${response.id}>Reserve Trip</button>
       <p>Continent: ${response.continent}</p>
       <p>About: ${response.about}</p>
-      <p>Cost: ${response.cost}</p>
+      <p>Cost: $${response.cost}</p>
       `;
 
       $cardSection.html(tripInfo);
@@ -67,9 +67,12 @@ $(document).ready(() => {
     $cardSection.toggle(loadTrip(tripID));
   });
 
-  $main.on('click', '#reserveBtn', function makeReservation() {
-    $reservationForm.show();
+  $trips.on('click', '#reserveBtn', function makeReservation() {
     const tripID = $(this).attr('data-id');
+    $reservationForm.appendTo(`#trip-${tripID}`);
+    console.log(tripID);
+    $reservationForm.show();
+
     const url = `https://trektravel.herokuapp.com/trips/${tripID}/reservations`;
     $reservationForm.attr('action', url);
   });
