@@ -1,6 +1,6 @@
 $(document).ready(() => {
   // JQUERY VARIABLES
-  const $tripsTable = $('#trips');
+  const $trips = $('#trips');
   const $allTripsBtn = $('#allTripsBtn');
   const $fail = $('#fail');
   const $main = $('#main');
@@ -9,34 +9,24 @@ $(document).ready(() => {
   const $message = $('#message');
 
   // Clear the screen
-  $tripsTable.hide();
+  $trips.hide();
   $reservationForm.hide();
 
   // FUNCTIONS
-  // Function to request all trips from API and put data into tripsTable
   const getTrips = () => {
     const tripsurl = 'https://trektravel.herokuapp.com/trips';
     const successTrips = (response) => {
       $message.html('Trek your way around the world!');
-      const headers = `
-        <thead>
-        <tr><th>Name</th>
-        <th>Continent</th>
-        <th>Length</th></tr>
-        </thead>
-        <tbody>`;
-      $tripsTable.append(headers);
       response.forEach((trip) => {
-        const row = `
-          <tr><td class="name" data-id=${trip.id}>${trip.name}</td>
-          <td>${trip.continent}</td>
-          <td>${trip.weeks}</td>
-          <tr id="trip-info"><tr>`;
-        // console.log(row);
-        $tripsTable.append(row);
-        $tripsTable.show();
+        console.log('entering');
+        const card = `
+        <div class="card">
+          <div class="card-divider name" id=${trip.id} data-id=${trip.id}
+          <h2>${trip.name}</h2>
+        </div>`;
+        $trips.append(card);
+        $trips.show();
       });
-      // $tripsTable.append('</tbody>'); // end of forEach trip loop
     }; // end of successCallback
 
     $.get(tripsurl, successTrips);
@@ -63,11 +53,11 @@ $(document).ready(() => {
   // Button to get all trips
   $allTripsBtn.on('click', () => {
     console.log('entering');
-    $tripsTable.empty();
+    $trips.empty();
     getTrips();
   });
 
-  $tripsTable.on('click', '.name', function getTrip() {
+  $trips.on('click', '.name', function getTrip() {
     const tripID = $(this).attr('data-id');
     loadTrip(tripID);
   });
