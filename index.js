@@ -22,6 +22,9 @@ $(document).ready(() => {
         <div class="card" id=trip-${trip.id} data-id=${trip.id}>
           <div class="card-divider"
           <h2>${trip.name}</h2>
+          </div>
+          <div class="card-section">
+          </div>
         </div>`;
         $trips.append(card);
         $trips.show();
@@ -35,19 +38,20 @@ $(document).ready(() => {
   const loadTrip = (id) => {
     const tripurl = `https://trektravel.herokuapp.com/trips/${id}`;
     const successTrip = (response) => {
-      const $card = $(`#trip-${response.id}`);
-      console.log($card);
+      const $cardSection = $(`#trip-${response.id} .card-section`);
+      console.log($cardSection);
       const tripInfo = `
-      <p>ID: ${response.id}</p>
-      <p>Name: ${response.name}</p>
+      <button class="button" id="reserveBtn" data-id=${response.id}>Reserve Trip</button>
       <p>Continent: ${response.continent}</p>
       <p>About: ${response.about}</p>
-      <button id="reserveBtn" data-id=${response.id}>Reserve Trip</button>`;
+      <p>Cost: ${response.cost}</p>
+      `;
 
-      $card.append(tripInfo);
+      $cardSection.html(tripInfo);
     };
 
     $.get(tripurl, successTrip);
+    // $cardSection.toggle(".card-section");
   };
 
   // ACTIONS
@@ -59,7 +63,8 @@ $(document).ready(() => {
 
   $trips.on('click', '.card', function getTrip() {
     const tripID = $(this).attr('data-id');
-    loadTrip(tripID);
+    const $cardSection = $(`#trip-${tripID} .card-section`);
+    $cardSection.toggle(loadTrip(tripID));
   });
 
   $main.on('click', '#reserveBtn', function makeReservation() {
