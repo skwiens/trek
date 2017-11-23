@@ -5,7 +5,8 @@ $(document).ready(() => {
   const $fail = $('#fail');
   const $main = $('#main');
   const $reserveBtn = $('#reserveBtn');
-  const $reservationForm = $('#reservation-form')
+  const $reservationForm = $('#reservation-form');
+  const $message = $('#message');
 
   // Clear the screen
   $tripsTable.hide();
@@ -16,10 +17,14 @@ $(document).ready(() => {
   const getTrips = () => {
     const tripsurl = 'https://trektravel.herokuapp.com/trips';
     const successTrips = (response) => {
+      $message.html('Trek your way around the world!');
       const headers = `
+        <thead>
         <tr><th>Name</th>
         <th>Continent</th>
-        <th>Length</th></tr>`;
+        <th>Length</th></tr>
+        </thead>
+        <tbody>`;
       $tripsTable.append(headers);
       response.forEach((trip) => {
         const row = `
@@ -30,7 +35,8 @@ $(document).ready(() => {
         // console.log(row);
         $tripsTable.append(row);
         $tripsTable.show();
-      }); // end of forEach trip loop
+      });
+      // $tripsTable.append('</tbody>'); // end of forEach trip loop
     }; // end of successCallback
 
     $.get(tripsurl, successTrips);
@@ -56,6 +62,7 @@ $(document).ready(() => {
   // ACTIONS
   // Button to get all trips
   $allTripsBtn.on('click', () => {
+    console.log('entering');
     $tripsTable.empty();
     getTrips();
   });
