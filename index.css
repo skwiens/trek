@@ -1,16 +1,72 @@
+body {
+  background-color: #ACEDFF;
+}
+
+header .button{
+  max-width: 75rem;
+  display: block;
+  width: 75%;
+  margin: auto;
+  margin-top: 100px;
+  margin-bottom: 40px;
+}
+
+.button {
+  background-color: #89BBFE;
+  color: #615D6C;
+}
+
+.button:hover {
+  box-shadow: 10px 10px 5px #888888;
+}
+
 .card p {
-  font-size: 1.5em;
+  font-size: 2.5em;
 }
 
 .card-section {
   display: none;
+  background-color: #CAE5FF;
+}
+
+.card-divider {
+ background-color: #6F8AB7;
 }
 
 .card {
-  margin-top: 50px;
-  margin-bottom: 50px;
+  width: 100%;
+  margin: 50px 0;
+  padding: 0;
+  border: 1px solid #615D6C;
 }
 
-.main {
-  background-color: #475841;
+.form {
+  background-color: #CAE5FF;
+}
+
+.form label, .form button {
+  font-size: 2.5em;
+}
+
+input[type='text'] {
+  font-size: 2.5em;
+  height: 80px;
+}
+
+.form section {
+  width: 80%;
+  margin: auto;
+}
+
+.trip-button {
+  display: block;
+  width: 80%;
+  margin: auto;
+}
+
+
+
+.border {
+  border: 1px solid #615D6C;
+  border-radius: 20px;
 }

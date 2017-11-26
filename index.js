@@ -4,10 +4,10 @@ $(document).ready(() => {
   const $trips = $('#trips');
   const $allTripsBtn = $('#allTripsBtn');
   const $fail = $('#fail');
-  const $main = $('#main');
   const $reserveBtn = $('#reserveBtn');
   const $reservationForm = $('#reservation-form');
   const $message = $('#message');
+  const $body = $('html, body')
   const tripsurl = 'https://trektravel.herokuapp.com/trips';
   const tripsRecord = {};
 
@@ -24,19 +24,19 @@ $(document).ready(() => {
 
   // Generic API fail function
   const failResponse = (response) => {
-    console.log(response);
-    $fail.html('<h4> Your request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again! </h4>');
+    $fail.html('Your request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!')
+    $body.animate({ scrollTop: 0 }, 'fast');
   };
 
   // get all trips from API
   const getTrips = () => {
     const successTrips = (response) => {
-      $message.html('Trek your way around the world!');
+      // $message.html('Choose a trip to get started!');
       response.forEach((trip) => {
         const card = `
-        <div class="card columns small-12" id=trip-${trip.id}>
+        <div class="card border columns small-12" id=trip-${trip.id}>
           <div class="card-divider" data-id=${trip.id}>
-            <button class="trip-button"><h2 class="trip-name">${trip.name}</h2></button>
+            <button class="trip-button"><h2 class="text-center trip-name">${trip.name}</h2></button>
           </div>
           <div class="card-section">
           </div>
@@ -57,12 +57,13 @@ $(document).ready(() => {
     const tripurl = `${tripsurl}/${id}`;
     const successTrip = (response) => {
       const $cardSection = $(`#trip-${response.id} .card-section`);
-      const $cardHeader = $(`#trip-${response.id} .card-divider`);
+      // const $cardHeader = $(`#trip-${response.id} .card-divider`);
       const tripInfo = `
-        <button class="button" id="reserveBtn" data-id=${response.id}>Reserve Trip</button>
+        <button class="button border" id="reserveBtn" data-id=${response.id}><h2>Reserve Trip</h2></button>
         <p>Continent: ${response.continent}</p>
-        <p>About: ${response.about}</p>
+        <p class="text-justify">About: ${response.about}</p>
         <p>Cost: $${response.cost}</p>
+        <button class="button border" id="reserveBtn" data-id=${response.id}><h2>Reserve Trip</h2></button>
         `;
       $cardSection.html(tripInfo);
     };
@@ -80,6 +81,7 @@ $(document).ready(() => {
       $reservationForm.each(function clearForm() {
         this.reset();
       });
+      $body.animate({ scrollTop: 0 }, 'fast');
     };
 
     $.post(url, formData, successPost)
