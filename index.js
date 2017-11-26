@@ -44,10 +44,6 @@ $(document).ready(() => {
         $trips.show();
       });
     }; // end of successCallback
-    // const failTrips = (response) => {
-    //   console.log(response);
-    //   $fail.html('<h4> Your request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again! </h4>');
-    // };
 
     $.get(tripsurl, successTrips)
       .fail(failResponse);
@@ -68,10 +64,6 @@ $(document).ready(() => {
 
       $cardSection.html(tripInfo);
     };
-    // const failTrip = (response) => {
-    //   console.log(response);
-    //   $fail.html('<h4>Request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!</h4>');
-    // };
 
     $.get(tripurl, successTrip)
       .fail(failResponse);
@@ -86,10 +78,6 @@ $(document).ready(() => {
         this.reset();
       });
     };
-    // const failPost = (response) => {
-    //   console.log(response);
-    //   $fail.html('<h4>Request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!</h4>');
-    // };
 
     $.post(url, formData, successPost)
       .fail(failResponse);
