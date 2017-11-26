@@ -32,9 +32,14 @@ $(document).ready(() => {
         $trips.show();
       });
     }; // end of successCallback
+    const failTrips = (response) => {
+      console.log(response);
+      $fail.html('<h4> Your request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again! </h4>');
+    };
 
-    $.get(tripsurl, successTrips);
-  }; // end of get trips function
+    $.get(tripsurl, successTrips)
+      .fail(failTrip);
+  };
 
   // Get individual trip details from API
   const loadTrip = (id) => {
@@ -50,8 +55,23 @@ $(document).ready(() => {
 
       $cardSection.html(tripInfo);
     };
+    const failTrip = (response) => {
+      console.log(response);
+      $fail.html('<h4>Request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!</h4>');
+    };
 
-    $.get(tripurl, successTrip);
+    $.get(tripurl, successTrip)
+      .fail(failTrip);
+  };
+
+  const postReservation = (url, formData) => {
+    $.post(url, formData, (response) => {
+      alert(`Congratulations! Reservation successfully made for ${response.name}.`);
+      $reservationForm.hide();
+      $reservationForm.each(function clearForm() {
+        this.reset();
+      });
+    });
   };
 
   // ACTIONS
@@ -75,12 +95,11 @@ $(document).ready(() => {
   $trips.on('click', '#reserveBtn', function makeReservation() {
     const tripID = $(this).attr('data-id');
     const $tripCard = $(`#trip-${tripID}`);
+    const url = `${tripsurl}/${tripID}/reservations`;
 
+    $reservationForm.attr('action', url);
     $reservationForm.appendTo($tripCard);
     $reservationForm.show();
-
-    const url = `${tripsurl}/${tripID}/reservations`;
-    $reservationForm.attr('action', url);
   });
 
   $reservationForm.submit(function submit(e) {
@@ -89,14 +108,6 @@ $(document).ready(() => {
     const url = $(this).attr('action');
     const formData = $(this).serialize();
 
-    $.post(url, formData, (response) => {
-      alert(`Congratulations! Reservation successfully made for ${response.name}.`);
-      $reservationForm.hide();
-      $reservationForm.each(function clearForm() {
-        this.reset();
-      });
-    });
+    postReservation(url, formData);
   });
-
-  // no padding!
-}); // end of document.ready
+});
