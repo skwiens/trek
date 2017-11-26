@@ -9,6 +9,7 @@ $(document).ready(() => {
   const $reservationForm = $('#reservation-form');
   const $message = $('#message');
   const tripsurl = 'https://trektravel.herokuapp.com/trips';
+  const tripsRecord = {};
 
   // Clear from screen
   $reservationForm.hide();
@@ -18,6 +19,7 @@ $(document).ready(() => {
   // Clear messages based on any click
   const clearMessages = () => {
     $fail.empty();
+    $message.empty();
   };
 
   // Generic API fail function
@@ -28,7 +30,6 @@ $(document).ready(() => {
 
   // get all trips from API
   const getTrips = () => {
-    // const tripsurl = 'https://trektravel.herokuapp.com/trips';
     const successTrips = (response) => {
       $message.html('Trek your way around the world!');
       response.forEach((trip) => {
@@ -42,12 +43,13 @@ $(document).ready(() => {
         </div>`;
         $trips.append(card);
         $trips.show();
+        tripsRecord[`${trip.id}`] = trip.name;
       });
+      console.log(tripsRecord);
     }; // end of successCallback
 
     $.get(tripsurl, successTrips)
       .fail(failResponse);
-    // .fail(failTrip);
   };
 
   // Get individual trip details from API
@@ -67,12 +69,13 @@ $(document).ready(() => {
 
     $.get(tripurl, successTrip)
       .fail(failResponse);
-    // .fail(failTrip);
   };
 
   const postReservation = (url, formData) => {
     const successPost = (response) => {
-      alert(`Congratulations! Reservation successfully made for ${response.name}.`);
+      const tripName = tripsRecord[response.trip_id];
+
+      $message.html(`Congratulations ${response.name}! You have successfully booked a trip for ${tripName}`);
       $reservationForm.hide();
       $reservationForm.each(function clearForm() {
         this.reset();
@@ -81,7 +84,6 @@ $(document).ready(() => {
 
     $.post(url, formData, successPost)
       .fail(failResponse);
-    // .fail(failPost);
   };
 
   // ACTIONS
@@ -104,10 +106,12 @@ $(document).ready(() => {
   // Button to show reservation form
   $trips.on('click', '#reserveBtn', function makeReservation() {
     const tripID = $(this).attr('data-id');
+    // const tripName = $(this).attr('data-name');
     const $tripCard = $(`#trip-${tripID}`);
     const url = `${tripsurl}/${tripID}/reservations`;
 
     $reservationForm.attr('action', url);
+    // $reservationForm.attr('tripName', tripName);
     $reservationForm.appendTo($tripCard);
     $reservationForm.show();
   });
@@ -117,6 +121,7 @@ $(document).ready(() => {
     e.preventDefault();
 
     const url = $(this).attr('action');
+    // const tripName = $(this).attr('tripName');
     const formData = $(this).serialize();
 
     postReservation(url, formData);
