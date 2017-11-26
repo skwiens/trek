@@ -1,5 +1,6 @@
 $(document).ready(() => {
   // JQUERY VARIABLES
+  const $document = $(document);
   const $trips = $('#trips');
   const $allTripsBtn = $('#allTripsBtn');
   const $fail = $('#fail');
@@ -13,6 +14,17 @@ $(document).ready(() => {
   $reservationForm.hide();
 
   // FUNCTIONS
+
+  // Clear messages based on any click
+  const clearMessages = () => {
+    $fail.empty();
+  };
+
+  // Generic API fail function
+  const failResponse = (response) => {
+    console.log(response);
+    $fail.html('<h4> Your request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again! </h4>');
+  };
 
   // get all trips from API
   const getTrips = () => {
@@ -32,13 +44,14 @@ $(document).ready(() => {
         $trips.show();
       });
     }; // end of successCallback
-    const failTrips = (response) => {
-      console.log(response);
-      $fail.html('<h4> Your request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again! </h4>');
-    };
+    // const failTrips = (response) => {
+    //   console.log(response);
+    //   $fail.html('<h4> Your request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again! </h4>');
+    // };
 
     $.get(tripsurl, successTrips)
-      .fail(failTrip);
+      .fail(failResponse);
+    // .fail(failTrip);
   };
 
   // Get individual trip details from API
@@ -55,13 +68,14 @@ $(document).ready(() => {
 
       $cardSection.html(tripInfo);
     };
-    const failTrip = (response) => {
-      console.log(response);
-      $fail.html('<h4>Request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!</h4>');
-    };
+    // const failTrip = (response) => {
+    //   console.log(response);
+    //   $fail.html('<h4>Request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!</h4>');
+    // };
 
     $.get(tripurl, successTrip)
-      .fail(failTrip);
+      .fail(failResponse);
+    // .fail(failTrip);
   };
 
   const postReservation = (url, formData) => {
@@ -72,21 +86,14 @@ $(document).ready(() => {
         this.reset();
       });
     };
-    const failPost = (response) => {
-      console.log(response);
-      $fail.html('<h4>Request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!</h4>');
-    };
+    // const failPost = (response) => {
+    //   console.log(response);
+    //   $fail.html('<h4>Request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!</h4>');
+    // };
 
     $.post(url, formData, successPost)
-      .fail(failPost);
-
-    // $.post(url, formData, (response) => {
-    //   alert(`Congratulations! Reservation successfully made for ${response.name}.`);
-    //   $reservationForm.hide();
-    //   $reservationForm.each(function clearForm() {
-    //     this.reset();
-    //   });
-    // });
+      .fail(failResponse);
+    // .fail(failPost);
   };
 
   // ACTIONS
@@ -97,7 +104,7 @@ $(document).ready(() => {
     getTrips();
   });
 
-  // Individual trip info embedded into all trips when header for trip is clicked
+  // Click trip header to see trip detail information
   $trips.on('click', '.card .card-divider', function getTrip() {
     const tripID = $(this).attr('data-id');
     const $cardSection = $(`#trip-${tripID} .card-section`);
@@ -117,6 +124,7 @@ $(document).ready(() => {
     $reservationForm.show();
   });
 
+  // Reservation form submit to post to a new trip
   $reservationForm.submit(function submit(e) {
     e.preventDefault();
 
@@ -125,4 +133,7 @@ $(document).ready(() => {
 
     postReservation(url, formData);
   });
+
+  // Clear messages when there is a click on any part of the document
+  $document.on('click', clearMessages);
 });
