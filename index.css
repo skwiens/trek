@@ -1,4 +1,16 @@
+.card p {
+  font-size: 1.5em;
+}
 
 .card-section {
   display: none;
+}
+
+.card {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.main {
+  background-color: #475841;
 }

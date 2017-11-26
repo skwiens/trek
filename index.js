@@ -34,7 +34,7 @@ $(document).ready(() => {
       $message.html('Trek your way around the world!');
       response.forEach((trip) => {
         const card = `
-        <div class="card" id=trip-${trip.id}>
+        <div class="card columns small-12" id=trip-${trip.id}>
           <div class="card-divider" data-id=${trip.id}>
             <button class="trip-button"><h2 class="trip-name">${trip.name}</h2></button>
           </div>
@@ -57,13 +57,13 @@ $(document).ready(() => {
     const tripurl = `${tripsurl}/${id}`;
     const successTrip = (response) => {
       const $cardSection = $(`#trip-${response.id} .card-section`);
+      const $cardHeader = $(`#trip-${response.id} .card-divider`);
       const tripInfo = `
         <button class="button" id="reserveBtn" data-id=${response.id}>Reserve Trip</button>
         <p>Continent: ${response.continent}</p>
         <p>About: ${response.about}</p>
         <p>Cost: $${response.cost}</p>
         `;
-
       $cardSection.html(tripInfo);
     };
 
