@@ -65,13 +65,28 @@ $(document).ready(() => {
   };
 
   const postReservation = (url, formData) => {
-    $.post(url, formData, (response) => {
+    const successPost = (response) => {
       alert(`Congratulations! Reservation successfully made for ${response.name}.`);
       $reservationForm.hide();
       $reservationForm.each(function clearForm() {
         this.reset();
       });
-    });
+    };
+    const failPost = (response) => {
+      console.log(response);
+      $fail.html('<h4>Request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!</h4>');
+    };
+
+    $.post(url, formData, successPost)
+      .fail(failPost);
+
+    // $.post(url, formData, (response) => {
+    //   alert(`Congratulations! Reservation successfully made for ${response.name}.`);
+    //   $reservationForm.hide();
+    //   $reservationForm.each(function clearForm() {
+    //     this.reset();
+    //   });
+    // });
   };
 
   // ACTIONS
