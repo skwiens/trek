@@ -58,6 +58,10 @@ input[type='text'] {
   margin: auto;
 }
 
+.row {
+  max-width: 100rem;
+}
+
 .trip-button {
   display: block;
   width: 80%;
