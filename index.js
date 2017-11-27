@@ -46,7 +46,6 @@ $(document).ready(() => {
         $trips.show();
         tripsRecord[`${trip.id}`] = trip.name;
       });
-      console.log(tripsRecord);
     };
 
     $.get(tripsurl, successTrips)
@@ -104,6 +103,7 @@ $(document).ready(() => {
 
     loadTrip(tripID);
     $cardSection.toggle();
+    $reservationForm.hide();
   });
 
   // Button to show reservation form
