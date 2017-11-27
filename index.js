@@ -57,12 +57,11 @@ $(document).ready(() => {
     const tripurl = `${tripsurl}/${id}`;
     const successTrip = (response) => {
       const $cardSection = $(`#trip-${response.id} .card-section`);
-      // const $cardHeader = $(`#trip-${response.id} .card-divider`);
       const tripInfo = `
         <button class="button border" id="reserveBtn" data-id=${response.id}><h2>Reserve Trip</h2></button>
         <p>Continent: ${response.continent}</p>
         <p class="text-justify">About: ${response.about}</p>
-        <p>Cost: $${response.cost}</p>
+        <p>Cost: $${response.cost.toFixed(2)}</p>
         <button class="button border" id="reserveBtn" data-id=${response.id}><h2>Reserve Trip</h2></button>
         `;
       $cardSection.html(tripInfo);
