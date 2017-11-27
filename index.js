@@ -16,7 +16,7 @@ $(document).ready(() => {
 
   // FUNCTIONS
 
-  // Clear messages based on any click
+  // Clear messages
   const clearMessages = () => {
     $fail.empty();
     $message.empty();
@@ -24,14 +24,15 @@ $(document).ready(() => {
 
   // Generic API fail function
   const failResponse = (response) => {
-    $fail.html('Your request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!')
+    console.log(`API failure: ${response}`);
+    $fail.html('Your request was unsuccessful.... if this makes you sad, <a href="https://www.boredpanda.com/cute-smiling-animals/"> click here </a> to feel happy again!');
     $body.animate({ scrollTop: 0 }, 'fast');
   };
 
   // get all trips from API
   const getTrips = () => {
     const successTrips = (response) => {
-      // $message.html('Choose a trip to get started!');
+      $message.html('Choose a trip to get started!');
       response.forEach((trip) => {
         const card = `
         <div class="card border columns small-12" id=trip-${trip.id}>
@@ -46,7 +47,7 @@ $(document).ready(() => {
         tripsRecord[`${trip.id}`] = trip.name;
       });
       console.log(tripsRecord);
-    }; // end of successCallback
+    };
 
     $.get(tripsurl, successTrips)
       .fail(failResponse);
@@ -71,6 +72,7 @@ $(document).ready(() => {
       .fail(failResponse);
   };
 
+  // Post a new reservation to the API
   const postReservation = (url, formData) => {
     const successPost = (response) => {
       const tripName = tripsRecord[response.trip_id];
@@ -95,7 +97,7 @@ $(document).ready(() => {
     getTrips();
   });
 
-  // Click trip header to see trip detail information
+  // Click trip header to toggle trip detail information
   $trips.on('click', '.card .card-divider', function getTrip() {
     const tripID = $(this).attr('data-id');
     const $cardSection = $(`#trip-${tripID} .card-section`);
@@ -107,12 +109,10 @@ $(document).ready(() => {
   // Button to show reservation form
   $trips.on('click', '#reserveBtn', function makeReservation() {
     const tripID = $(this).attr('data-id');
-    // const tripName = $(this).attr('data-name');
     const $tripCard = $(`#trip-${tripID}`);
     const url = `${tripsurl}/${tripID}/reservations`;
 
     $reservationForm.attr('action', url);
-    // $reservationForm.attr('tripName', tripName);
     $reservationForm.appendTo($tripCard);
     $reservationForm.show();
   });
@@ -122,7 +122,6 @@ $(document).ready(() => {
     e.preventDefault();
 
     const url = $(this).attr('action');
-    // const tripName = $(this).attr('tripName');
     const formData = $(this).serialize();
 
     postReservation(url, formData);
